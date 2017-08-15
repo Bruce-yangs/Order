@@ -21,8 +21,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.vue', '.json'],//自动补全后缀名
     alias: {//提供一些别名  也就是 简称
-      'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src')
+      'src': path.resolve(__dirname, '../src'),
+      'common': path.resolve(__dirname, '../src/common'),
+      'components': path.resolve(__dirname, '../src/components')
     }
   },
   module: {

@@ -34,6 +34,10 @@ module.exports = merge(baseWebpackConfig, {
       template: 'index.html',//指处理更目录的index.html 最后处理完还是 同名index.html
       inject: true//指打包后的js css 自动添加到这个html文件里
     }),
-    new FriendlyErrorsPlugin()// 用于更友好地输出webpack的警告、错误等信息
+    new FriendlyErrorsPlugin(),// 用于更友好地输出webpack的警告、错误等信息
+
+    new webpack.ProvidePlugin({//配置全局第三方插件
+      // 'axios': 'axios',
+    })
   ]
 })

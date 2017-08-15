@@ -23,6 +23,45 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()//启动一个app对象
+
+
+
+//用Node定义请求数据接口----------------------------------------------------
+
+//引入mock数据
+var appData = require('../data.json');
+//定义数据的变量
+var seller = appData.seller;
+var goods = appData.goods;
+var ratings = appData.ratings;
+
+var apiRoutes = express.Router();
+//商品
+apiRoutes.get('/seller',function (req,res) {
+  res.json({
+    errno:0,//通常为零是正常
+    data:seller
+  })
+});
+//食物
+apiRoutes.get('/goods',function (req,res) {
+  res.json({
+    errno:0,//通常为零是正常
+    data:goods
+  })
+});
+//评论
+apiRoutes.get('/ratings',function (req,res) {
+  res.json({
+    errno:0,//通常为零是正常
+    data:ratings
+  })
+});
+//调用请求API
+app.use('/api',apiRoutes);
+//-----------------------------------------------------------------------
+
+
 var compiler = webpack(webpackConfig)//进行webpack 编译
 
 //中间件  把编译好的文件 放在内存里  ->这是非常强大的功能
