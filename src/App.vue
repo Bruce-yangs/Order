@@ -1,6 +1,6 @@
 <template>
   <div >
-              <!--传给header组件-->
+              <!--传给子组件header组件-->
     <v-header :seller="seller"></v-header>
     <div class="tab border-1px">
       <div class="tab-item">
@@ -13,7 +13,7 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-    <router-view></router-view>
+    <router-view :seller="seller"></router-view>
   </div>
 </template>
 

@@ -65,7 +65,9 @@
 </template>
 
 <script>
+
   import star from 'components/star/star';
+
 
   export default {
     name: 'header',
@@ -219,7 +221,7 @@
       left 0
       z-index 11
       opacity: 1
-      backdrop-filter: blur(10px)/*模糊背景只有在IOS上有效果*/
+      backdrop-filter: blur(10px)
       background rgba(7,17,27,.8)
       overflow auto
       &.fade-enter-active, &.fade-leave-active
@@ -237,7 +239,7 @@
             line-height 16px
             text-align center
             font-size 16px
-            font-wieght 700
+            font-weight 700
           .star-wrapper
             margin-top 18px
             padding 2px 0
@@ -268,10 +270,9 @@
                   display inline-block
                   width 16px
                   height 16px
-                  vertical-align center
                   margin-right 6px
                   background-size 16px 16px
-                  background-repeat no-repaet
+                  background-repeat no-repeat
                   vertical-align top
                   &.decrease
                     bg-image('decrease_2')
@@ -297,7 +298,7 @@
         position relative
         width 32px
         height 32px
-        margin -64px auto 0 auto
+        margin -74px auto 0 auto
         clear both
         font-size 32px
 
