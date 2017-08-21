@@ -30,20 +30,25 @@
                           <span class="now">￥{{food.price}}</span>
                           <span v-show="food.oldPrice" class="old">￥{{food.oldPrice}}</span>
                         </div>
+                        <div class="cartcontrol-wrapper">
+                          <!--此处调用cartcontrol 里的自定义事件 @add   addFood是当前的一个方法接受 子传父的信息 -->
+                          <cartcontrol @add="addFood" :foods="food"></cartcontrol>
+                        </div>
                       </div>
                     </li>
                   </ul>
                 </li>
               </ul>
             </div>
-            <shopcart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
-        </div>
+            <shopcart ref="shopcart" :selectFoods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+        </div><!--:select-foods="selectFoods"-->
     </div>
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcart/shopcart';
+  import cartcontrol from 'components/cartcontrol/cartcontrol';
 
   const ERR_OK = 0;//定义全局常量
   export default {
@@ -67,7 +72,8 @@
             if (response.errno === ERR_OK) {
 //          console.log(response)
               //Object.assign()用于将所有可枚举的属性的值从一个或多个源对象复制到目标对象。它将返回目标对象。相当于 $.extend({},obj,true)
-              this.goods = Object.assign({}, this.goods, response.data);
+//              this.goods = Object.assign({}, this.goods, response.data);
+              this.goods = response.data ;
               this.$nextTick(() => {
                 this._initScroll();
                 this._calculateHeight();
@@ -122,7 +128,19 @@
         let menuList = this.$refs.menuList;
         let el = menuList[index];
         this.menuScroll.scrollToElement(el, 300, 0, -100);
-      }
+      },
+      _drop(target) {
+        // 体验优化,异步执行下落动画  因为子组件shopcart里的动画 和 点击添加按钮动画 一起 出现会卡  所以此处 进行异步优化
+        this.$nextTick(() => {
+//           console.log(target);
+           //此处的shopcart 是shopcart ref绑定的变量 接口
+          this.$refs.shopcart.drop(target);
+        });
+      },
+      addFood(target) {
+
+        this._drop(target);
+      },
     },
     computed: {
         currentIndex() {//实时计算当前左侧菜单的索引值
@@ -137,10 +155,21 @@
                 }
             }
             return 0 ;
+        },
+        selectFoods() {//此处是传给购物车相关 数据（如：数量，价钱）
+            let foods = [];
+            this.goods.forEach((good) => {
+              good.foods.forEach((food) => {
+                if (food.count) {
+                  foods.push(food);
+                }
+              });
+            });
+            return foods;
         }
     },
     components:{
-      shopcart
+      shopcart,cartcontrol
     }
   }
 
@@ -246,4 +275,8 @@
               text-decoration line-through
               font-size 10px
               color rgb(143,153,159)
+          .cartcontrol-wrapper
+            position absolute
+            right 0
+            bottom 12px
 </style>
