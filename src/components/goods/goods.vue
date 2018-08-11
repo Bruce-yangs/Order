@@ -15,7 +15,7 @@
                 <li v-for="item in goods" class="food-list" ref="foodList">
                   <h1 class="title">{{item.name}}</h1>
                   <ul>
-                    <li v-for="food in item.foods" class="food-item border-1px">
+                    <li @click="selectFood(food,$event)" v-for="food in item.foods" class="food-item border-1px">
                       <div class="icon">
                         <img :src="food.icon" width="57">
                       </div>
@@ -40,15 +40,18 @@
                 </li>
               </ul>
             </div>
-            <shopcart ref="shopcart" :selectFoods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+          <shopcart ref="shopcart" :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice"
+                    :minPrice="seller.minPrice"></shopcart>
         </div><!--:select-foods="selectFoods"-->
-    </div>
+      <food @add="addFood" :food="selectedFood" ref="food"></food>
+    </div>                       <!--ref 是子组件的方法 父组件通过ref调用 this.$refs.food.show()-->
 </template>
 
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcart/shopcart';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import food from 'components/food/food';
 
   const ERR_OK = 0;//定义全局常量
   export default {
@@ -141,6 +144,14 @@
 
         this._drop(target);
       },
+      selectFood(food, event) {//点击具体某个商品
+        if (!event._constructed) {
+          return;
+        }
+        this.selectedFood = food;
+       // <!--ref 是子组件的方法 父组件通过ref调用 this.$refs.food.show()-->
+        this.$refs.food.show();
+      }
     },
     computed: {
         currentIndex() {//实时计算当前左侧菜单的索引值
@@ -169,7 +180,7 @@
         }
     },
     components:{
-      shopcart,cartcontrol
+      shopcart,cartcontrol,food
     }
   }
 

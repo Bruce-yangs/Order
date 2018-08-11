@@ -23,7 +23,7 @@ module.exports = {
   },
   dev: {
     env: require('./dev.env'),
-    port: 8081,
+    port: 8088,
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',//静态文件  utils.js assetsSubDirectory 拼接传参  webpack.base.conf.js 下module.name用到
     assetsPublicPath: '/',
