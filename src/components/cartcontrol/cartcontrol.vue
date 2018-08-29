@@ -1,15 +1,13 @@
 <template>
-    <div>
         <div class="cartcontrol">
           <transition name="move">
-            <div class="cart-decrease" v-show="foods.count>0" @click="decreaseCart">
+            <div class="cart-decrease" v-show="foods.count>0" @click.stop.prevent="decreaseCart">
               <span class="inner icon-remove_circle_outline"></span>
             </div>
           </transition>
             <div class="cart-count" v-show="foods.count>0">{{foods.count}}</div>
-          <div class="cart-add icon-add_circle" @click="addCart"></div>
+          <div class="cart-add icon-add_circle" @click.stop.prevent="addCart"></div>
         </div>
-    </div>
 </template>
 
 <script type="text/ecmascript-6">
@@ -33,7 +31,7 @@
               }
 
               //此处的add 是自定义事件名称  在goods组件 中调用方法是  @add
-            this.$emit('add', event.target);//获得点击对象的 参数值
+            this.$emit('add', e.target);//获得点击对象的 参数值
           },
           decreaseCart(e) {//减
             if(!e._constructed){

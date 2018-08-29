@@ -13,27 +13,35 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-    <router-view :seller="seller"></router-view>
+    <keep-alive>
+      <router-view :seller="seller" ></router-view>
+    </keep-alive>
   </div>
 </template>
 
 <script>
   import header from 'components/header/header';
+  import {urlParse} from 'common/js/util';
+
   const ERR_OK = 0;//定义全局常量
   export default {
     name: 'app',
     data(){
-        return {
-            seller:{ }//初始化传给 header组件时是个空对象，要在header组件展示数据时判断
+        return {//初始化传给 header组件时是个空对象，要在header组件展示数据时判断
+            seller:{
+              id: (() => {
+                let queryParam = urlParse();
+                return queryParam.id;
+              })()
+            }
 
         }
     },
     created(){
-      this.$http.get('/api/seller').then((response) => {
-//      this.$http.get('/api/seller?id=' + this.seller.id).then((response) => {
+      this.$http.get('/api/seller?id=' + this.seller.id).then((response) => {
         response = response.body;
         if (response.errno === ERR_OK) {
-//          console.log(response)
+            //vue官网推荐新增属性的方法Object.assign
           this.seller = Object.assign({}, this.seller, response.data);
         }
       });
